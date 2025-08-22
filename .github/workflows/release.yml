@@ -29,14 +29,20 @@ jobs:
       - name: Cross-compile with cross
         run: cross build --target ${{ matrix.target }} --release
 
+      - name: Prepare artifact directory
+        run: |
+          mkdir -p artifact
+          # Copy binary to artifact root
+          cp target/${{ matrix.target }}/release/linht-gui artifact/
+          # Copy flowgraphs and fonts directories to artifact root
+          cp -r flowgraphs artifact/
+          cp -r fonts artifact/
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: linht-gui-${{ matrix.target }}
-          path: |
-            target/${{ matrix.target }}/release/linht-gui
-            flowgraphs/
-            fonts/
+          path: artifact/
 
   create_release:
     needs: build
@@ -55,7 +61,7 @@ jobs:
         run: |
           cd artifact
           zip -r linht-gui-package.zip \
-            target/aarch64-unknown-linux-gnu/release/linht-gui \
+            linht-gui \
             flowgraphs \
             fonts
 
@@ -63,7 +69,7 @@ jobs:
         run: |
           cd artifact
           tar czf linht-gui-package.tar.gz \
-            target/aarch64-unknown-linux-gnu/release/linht-gui \
+            linht-gui \
             flowgraphs \
             fonts
 
@@ -74,7 +80,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v0.1.${{ github.run_number }}
-          release_name: Release ${{ github.run_number }}
+          release_name: v0.1.${{ github.run_number }}
           draft: false
           prerelease: false
 
