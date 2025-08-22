@@ -2,34 +2,6 @@ name: Cross Compile Rust
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        target:
-          - aarch64-unknown-linux-gnu
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install Rust toolchain and cross
-        run: |
-          rustup target add ${{ matrix.target }}
-          cargo install cross
-
-      - name: Cross-compile with cross
-        run: cross build --target ${{ matrix.target }} --release
-
-name: Cross Compile Rust
-
-on:
-  push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
