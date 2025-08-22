@@ -28,10 +28,11 @@ jobs:
         run: cross build --target ${{ matrix.target }} --release
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: linht-gui-${{ matrix.target }}
           path: |
             target/${{ matrix.target }}/release/
             flowgraph/
             fonts/
+
