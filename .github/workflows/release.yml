@@ -29,20 +29,14 @@ jobs:
       - name: Cross-compile with cross
         run: cross build --target ${{ matrix.target }} --release
 
-      - name: List contents before uploading artifact
-        run: |
-          ls -lR target/${{ matrix.target }}/release/
-          ls -lR flowgraph/
-          ls -lR fonts/
-
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: linht-gui-${{ matrix.target }}
           path: |
-            target/${{ matrix.target }}/release/
-            flowgraph/
-            fonts/
+            target/${{ matrix.target }}/release/linht-gui
+            ../flowgraph/
+            ../fonts/
 
   create_release:
     needs: build
