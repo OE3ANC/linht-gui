@@ -38,7 +38,7 @@ jobs:
             target/${{ matrix.target }}/release/
             flowgraph/
             fonts/
-
+            
   create_release:
     needs: build
     runs-on: ubuntu-latest
@@ -48,6 +48,20 @@ jobs:
         with:
           name: linht-gui-aarch64-unknown-linux-gnu
           path: ./artifact
+
+      - name: Create ZIP archive
+        run: |
+          cd artifact
+          zip -r linht-gui-package.zip \
+            target/aarch64-unknown-linux-gnu/release/linht-gui \
+            flowgraph fonts
+
+      - name: Create TAR.GZ archive
+        run: |
+          cd artifact
+          tar czf linht-gui-package.tar.gz \
+            -C target/aarch64-unknown-linux-gnu/release linht-gui \
+            flowgraph fonts
 
       - name: Create GitHub Release
         id: create_release
@@ -60,32 +74,22 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload binary artifact to release
+      - name: Upload ZIP archive to release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifact/target/aarch64-unknown-linux-gnu/release/linht-gui
-          asset_name: linht-gui
-          asset_content_type: application/octet-stream
-
-      - name: Upload flowgraph folder to release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifact/flowgraph
-          asset_name: flowgraph.zip
+          asset_path: ./artifact/linht-gui-package.zip
+          asset_name: linht-gui-package.zip
           asset_content_type: application/zip
 
-      - name: Upload fonts folder to release
+      - name: Upload TAR.GZ archive to release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifact/fonts
-          asset_name: fonts.zip
-          asset_content_type: application/zip
+          asset_path: ./artifact/linht-gui-package.tar.gz
+          asset_name: linht-gui-package.tar.gz
+          asset_content_type: application/gzip
