@@ -1,0 +1,30 @@
+[package]
+name = "linht-gui"
+version = "1.0.0"
+edition = "2021"
+authors = ["Andreas, OE3ANC"]
+description = "Basic GUI and flowgraph handling for LinHT"
+
+[[bin]]
+name = "linht-gui"
+path = "src/main.rs"
+
+[dependencies]
+# Core dependencies only - no async runtime needed!
+fontdue = "0.8"      # Font rendering
+memmap2 = "0.9"      # Framebuffer memory mapping
+libc = "0.2"         # System calls
+evdev = "0.12"       # Linux input device support
+
+[dev-dependencies]
+tempfile = "3.8"     # For testing
+
+[profile.release]
+opt-level = 2        # Optimize for size
+lto = true           # Link-time optimization
+codegen-units = 1    # Single codegen unit for better optimization
+strip = true         # Strip symbols for smaller binary
+
+[profile.dev]
+opt-level = 0
+debug = true
