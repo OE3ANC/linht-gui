@@ -41,7 +41,3 @@ memmap2 = "0.9"
 libc = "0.2"
 evdev = "0.12"
 ```
-
-## License
-
-MIT
