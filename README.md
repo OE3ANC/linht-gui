@@ -22,8 +22,8 @@ cargo build --target aarch64-unknown-linux-gnu --release
 3. Controls:
    - `+` / `UP` - Next flowgraph
    - `-` / `DOWN` - Previous flowgraph  
-   - `r` / `ENTER` - Run flowgraph
-   - `s` / `ESC` - Stop flowgraph
+   - `r` / `GREEN` - Run flowgraph
+   - `s` / `RED` - Stop flowgraph
    - `q` - Quit
 
 ## Requirements
