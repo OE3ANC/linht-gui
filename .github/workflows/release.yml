@@ -66,8 +66,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifact/target/aarch64-unknown-linux-gnu/release/your_binary_name_here
-          asset_name: your_binary_name_here
+          asset_path: ./artifact/target/aarch64-unknown-linux-gnu/release/linht-gui
+          asset_name: linht-gui
           asset_content_type: application/octet-stream
 
       - name: Upload flowgraph folder to release
