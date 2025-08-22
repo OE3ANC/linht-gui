@@ -1,25 +1,64 @@
-# .github/workflows/release.yml
+name: Cross Compile Rust
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
-    
+
 jobs:
-  release:
-    name: release ${{ matrix.target }}
+  build:
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
       matrix:
-        target: [aarch64-unknown-linux-gnu]
+        target:
+          - aarch64-unknown-linux-gnu
+
     steps:
-      - uses: actions/checkout@master
-      - name: Compile and release
-        uses: rust-build/rust-build.action@v1.4.5
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain and cross
+        run: |
+          rustup target add ${{ matrix.target }}
+          cargo install cross
+
+      - name: Cross-compile with cross
+        run: cross build --target ${{ matrix.target }} --release
+
+name: Cross Compile Rust
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - aarch64-unknown-linux-gnu
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain and cross
+        run: |
+          rustup target add ${{ matrix.target }}
+          cargo install cross
+
+      - name: Cross-compile with cross
+        run: cross build --target ${{ matrix.target }} --release
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
         with:
-          RUSTTARGET: ${{ matrix.target }}
-          EXTRA_FILES: "flowcharts/*"
+          name: linht-gui-${{ matrix.target }}
+          path: |
+            target/${{ matrix.target }}/release/
+            flowgraph/
+            fonts/
