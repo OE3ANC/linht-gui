@@ -11,7 +11,7 @@ cargo build --release
 # Run
 cargo run
 
-# Cross-compile for ARM64
+# Cross-compile for LinHT
 cargo build --target aarch64-unknown-linux-gnu --release
 ```
 
