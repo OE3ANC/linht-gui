@@ -63,7 +63,8 @@ jobs:
           zip -r linht-gui-package.zip \
             linht-gui \
             flowgraphs \
-            fonts
+            fonts \
+            LICENSE
 
       - name: Create TAR.GZ archive
         run: |
@@ -71,7 +72,8 @@ jobs:
           tar czf linht-gui-package.tar.gz \
             linht-gui \
             flowgraphs \
-            fonts
+            fonts \
+            LICENSE
 
       - name: Create GitHub Release
         id: create_release
