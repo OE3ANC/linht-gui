@@ -37,6 +37,8 @@ jobs:
           # Copy flowgraphs and fonts directories to artifact root
           cp -r flowgraphs artifact/
           cp -r fonts artifact/
+          # Copy LICENSE
+          cp LICENSE artifact/LICENSE
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
